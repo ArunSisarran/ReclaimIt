@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import AddSubmission from './AddSubmissionPage/AddSubmission.js';
 
 function App() {
   return (
