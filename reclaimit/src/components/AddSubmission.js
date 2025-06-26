@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AddSubmission.css';
+import Header from './Header';
 
 const commonLocations = [
  ' North Building', 
@@ -133,100 +134,37 @@ const AddSubmission = () => {
     : submissions;
 
   return (
-    <div className="submission-container">
-      <h2>Submit a Found Item</h2>
+    <div className="submission-page">
+      <Header />
+      <div className="submission-container">
+        <h2>Submit a Found Item</h2>
 
-      <form onSubmit={handleSubmit} className="submission-form" autoComplete="off">
-        <label>Item Name</label>
-        <input
-          type="text"
-          name="itemName"
-          value={formData.itemName}
-          onChange={handleChange}
-          required
-        />
-
-        <label>Found Location</label>
-        <input
-          type="text"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-          onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
-        />
-        
-        {showSuggestions && locationSuggestions.length > 0 && (
-          <ul className="suggestions-list">
-            {locationSuggestions.map((s, i) => (
-              <li
-                key={i}
-                onClick={() => handleSuggestionClick(s)}
-                className="suggestion-item"
-              >
-                {s}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <label>Date Found (MM/DD/YYYY)</label>
-        <input
-          type="text"
-          name="dateFound"
-          value={formData.dateFound}
-          onChange={handleChange}
-          required
-        />
-
-        <label>Item Description</label>
-        <textarea
-          name="description"
-          rows="4"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-
-        <label>Your Email</label>
-        <input
-          type="email"
-          name="contact"
-          value={formData.contact}
-          onChange={handleChange}
-          required
-        />
-
-        <label>Upload Photo</label>
-        <input
-          type="file"
-          id="imageUpload"
-          name="imageUpload"
-          accept="image/*"
-          onChange={handleChange}
-          required
-        />
-
-        <button type="submit">Submit Item</button>
-      </form>
-
-      {/* Filter section with dropdown suggestions */}
-      <div className="filter-section">
-        <h3>Filter by Location</h3>
-        <div className="filter-input-wrapper">
+        <form onSubmit={handleSubmit} className="submission-form" autoComplete="off">
+          <label>Item Name</label>
           <input
             type="text"
-            placeholder="Enter location to filter..."
-            value={filterLocation}
-            onChange={handleFilterChange}
-            onBlur={() => setTimeout(() => setShowFilterSuggestions(false), 100)}
+            name="itemName"
+            value={formData.itemName}
+            onChange={handleChange}
+            required
           />
-          {showFilterSuggestions && filterSuggestions.length > 0 && (
-            <ul className="filter-suggestions-list">
-              {filterSuggestions.map((s, i) => (
+
+          <label>Found Location</label>
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+          />
+          
+          {showSuggestions && locationSuggestions.length > 0 && (
+            <ul className="suggestions-list">
+              {locationSuggestions.map((s, i) => (
                 <li
                   key={i}
-                  onClick={() => handleFilterSuggestionClick(s)}
+                  onClick={() => handleSuggestionClick(s)}
                   className="suggestion-item"
                 >
                   {s}
@@ -234,31 +172,97 @@ const AddSubmission = () => {
               ))}
             </ul>
           )}
-        </div>
-      </div>
 
-      {/* Display submissions */}
-      <div className="submission-list">
-        <h3>Found Items</h3>
-        {filteredSubmissions.length === 0 ? (
-          <p>No items found.</p>
-        ) : (
-          filteredSubmissions.map((item) => (
-            <div key={item.id} className="submission-card">
-              <h4>{item.itemName}</h4>
-              <p><strong>Location:</strong> {item.location}</p>
-              <p><strong>Date:</strong> {item.dateFound}</p>
-              <p><strong>Description:</strong> {item.description}</p>
-              <p><strong>Contact:</strong> {item.contact}</p>
-              {item.imageUpload && (
-                <img
-                  src={URL.createObjectURL(item.imageUpload)}
-                  alt="Found item"
-                />
-              )}
-            </div>
-          ))
-        )}
+          <label>Date Found (MM/DD/YYYY)</label>
+          <input
+            type="text"
+            name="dateFound"
+            value={formData.dateFound}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Item Description</label>
+          <textarea
+            name="description"
+            rows="4"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Your Email</label>
+          <input
+            type="email"
+            name="contact"
+            value={formData.contact}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Upload Photo</label>
+          <input
+            type="file"
+            id="imageUpload"
+            name="imageUpload"
+            accept="image/*"
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit">Submit Item</button>
+        </form>
+
+        {/* Filter section with dropdown suggestions */}
+        <div className="filter-section">
+          <h3>Filter by Location</h3>
+          <div className="filter-input-wrapper">
+            <input
+              type="text"
+              placeholder="Enter location to filter..."
+              value={filterLocation}
+              onChange={handleFilterChange}
+              onBlur={() => setTimeout(() => setShowFilterSuggestions(false), 100)}
+            />
+            {showFilterSuggestions && filterSuggestions.length > 0 && (
+              <ul className="filter-suggestions-list">
+                {filterSuggestions.map((s, i) => (
+                  <li
+                    key={i}
+                    onClick={() => handleFilterSuggestionClick(s)}
+                    className="suggestion-item"
+                  >
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {/* Display submissions */}
+        <div className="submission-list">
+          <h3>Found Items</h3>
+          {filteredSubmissions.length === 0 ? (
+            <p>No items found.</p>
+          ) : (
+            filteredSubmissions.map((item) => (
+              <div key={item.id} className="submission-card">
+                <h4>{item.itemName}</h4>
+                <p><strong>Location:</strong> {item.location}</p>
+                <p><strong>Date:</strong> {item.dateFound}</p>
+                <p><strong>Description:</strong> {item.description}</p>
+                <p><strong>Contact:</strong> {item.contact}</p>
+                {item.imageUpload && (
+                  <img
+                    src={URL.createObjectURL(item.imageUpload)}
+                    alt="Found item"
+                  />
+                )}
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
