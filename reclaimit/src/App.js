@@ -1,11 +1,18 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import AddSubmission from './AddSubmissionPage/AddSubmission.js';
+import Homepage from './components/Homepage';
+import AddSubmission from './components/AddSubmission';
 
 function App() {
   return (
     <div className="App">
-      <AddSubmission />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/submit" element={<AddSubmission />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
