@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './AddSubmission.css';
 import Header from './Header';
-import FirestoreService from '../services/FirestoreService';
+import FirestoreService from './FirestoreService';
 
 
 const commonLocations = [
