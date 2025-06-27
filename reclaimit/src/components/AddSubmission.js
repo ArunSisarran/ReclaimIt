@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddSubmission.css';
 import Header from './Header';
+import FirestoreService from '../services/FirestoreService';
+
 
 const commonLocations = [
- ' North Building', 
+  'North Building', 
   'East Building', 
   'Cooperman Library', 
   'West Building', 
@@ -27,7 +29,7 @@ const AddSubmission = () => {
     location: '',
     dateFound: '',
     description: '',
-    contact: '',
+    contactEmail: '',
     imageUpload: null,
   });
 
@@ -41,6 +43,24 @@ const AddSubmission = () => {
   // Suggestions for filter input
   const [filterSuggestions, setFilterSuggestions] = useState([]);
   const [showFilterSuggestions, setShowFilterSuggestions] = useState(false);
+
+  useEffect(() => {
+    async function loadItems() {
+      const data = await FirestoreService.getFoundItems();
+      setSubmissions(data);
+    }
+    loadItems();
+  }, []);
+
+  useEffect(() => {
+    async function fetchFiltered() {
+      const data = await FirestoreService.getFoundItems(filterLocation);
+      setSubmissions(data);
+    }
+    fetchFiltered();
+  }, [filterLocation]);
+  
+  
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -70,34 +90,49 @@ const AddSubmission = () => {
     return pattern.test(date);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validateDate(formData.dateFound)) {
       alert('Please enter the date in MM/DD/YYYY format.');
       return;
     }
-
-    const newSubmission = {
-      ...formData,
-      id: Date.now(),
-    };
-
-    setSubmissions((prev) => [newSubmission, ...prev]);
-    alert('Thank you! Your item has been submitted.');
-
-    setFormData({
-      itemName: '',
-      location: '',
-      dateFound: '',
-      description: '',
-      contact: '',
-      imageUpload: null,
-    });
-    setLocationSuggestions([]);
-    setShowSuggestions(false);
-    document.getElementById('imageUpload').value = '';
+  
+    try {
+      const id = await FirestoreService.addFoundItem(
+        {
+          itemName: formData.itemName,
+          location: formData.location,
+          dateFound: formData.dateFound,
+          description: formData.description,
+          contactEmail: formData.contactEmail,
+        },
+        formData.imageUpload
+      );
+  
+      alert('Thank you! Your item has been submitted.');
+  
+      setFormData({
+        itemName: '',
+        location: '',
+        dateFound: '',
+        description: '',
+        contactEmail: '',
+        imageUpload: null,
+      });
+  
+      document.getElementById('imageUpload').value = '';
+  
+      // Refresh item list
+      const data = await FirestoreService.getFoundItems();
+      setSubmissions(data);
+  
+    } catch (err) {
+      console.error(err);
+      alert("There was an error submitting the item.");
+    }
   };
+  
 
   // Combine locations from submissions and common locations, unique
   const allLocations = Array.from(
@@ -107,25 +142,27 @@ const AddSubmission = () => {
   const handleFilterChange = (e) => {
     const val = e.target.value;
     setFilterLocation(val);
-
+  
     if (val.trim() === '') {
       setFilterSuggestions([]);
       setShowFilterSuggestions(false);
       return;
     }
-
+  
     const filtered = allLocations.filter((loc) =>
       loc.toLowerCase().startsWith(val.toLowerCase())
     );
     setFilterSuggestions(filtered);
     setShowFilterSuggestions(true);
   };
+  
 
   const handleFilterSuggestionClick = (suggestion) => {
     setFilterLocation(suggestion);
     setFilterSuggestions([]);
     setShowFilterSuggestions(false);
   };
+  
 
   const filteredSubmissions = filterLocation
     ? submissions.filter((item) =>
@@ -194,8 +231,8 @@ const AddSubmission = () => {
           <label>Your Email</label>
           <input
             type="email"
-            name="contact"
-            value={formData.contact}
+            name="contactEmail"
+            value={formData.contactEmail}
             onChange={handleChange}
             required
           />
@@ -252,13 +289,8 @@ const AddSubmission = () => {
                 <p><strong>Location:</strong> {item.location}</p>
                 <p><strong>Date:</strong> {item.dateFound}</p>
                 <p><strong>Description:</strong> {item.description}</p>
-                <p><strong>Contact:</strong> {item.contact}</p>
-                {item.imageUpload && (
-                  <img
-                    src={URL.createObjectURL(item.imageUpload)}
-                    alt="Found item"
-                  />
-                )}
+                <p><strong>Contact:</strong> {item.contactEmail}</p>
+                {item.imageUrl && <img src={item.imageUrl} alt="Found item" />}
               </div>
             ))
           )}
