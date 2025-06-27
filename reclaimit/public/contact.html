@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ReclaimIt</title>
+
+<!--This allows the email sending-->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+
+    <!--This allows to wait until the page loads-->
+    window.onload = function(){
+      emailjs.init("WuFZcdSLARs6o8iXX");   <!--public key-->
+    };
+
+    function sendEmail(event){
+      event.preventDefault();
+ <!--service, template ID, and contact form to read using EmailJS-->
+      emailjs.sendForm("service_hw20uol", "template_9ysvnfe", "#contact-form")
+        .then(function(){
+          alert("Message sent successfully!");  <!--If the message is failed to send, this will pop up-->
+          document.getElementById("contact-form").reset();
+        }, function (error){
+          alert("Failed to send message:\n" + JSON.stringify(error));
+        });
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0077cc;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ReclaimIt</h1>
+  </header>
+
+  <main>
+    <form id="contact-form" onsubmit="sendEmail(event)">
+      <label for="user_name">Name:</label>
+      <input type="text" name="user_name" id="user_name" required>
+
+      <label for="user_email">Email:</label>
+      <input type="email" name="user_email" id="user_email" required>
+
+      <label for="message">Message:</label>
+      <textarea name="message" id="message" rows="5" required></textarea>
+
+      <label for="finder_email">Email of the finder:</label>
+      <input type="email" name="finder_email" id="finder_email" required>
+
+      <button type="submit">Send</button>
+    </form>
+  </main>
+</body>
+</html>
