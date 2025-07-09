@@ -5,6 +5,7 @@ import Homepage from './components/Homepage';
 import AddSubmission from './components/AddSubmission';
 import Contact from './components/Contact';
 import About from './components/About';
+import FoundItemsPage from './components/FoundItemsPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/submit" element={<AddSubmission />} />
+          <Route path="/submit2" element={<FoundItemsPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
         </Routes>

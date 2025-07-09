@@ -1,18 +1,23 @@
 import Header from './Header';
 import './Contact.css';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Contact() {
-  window.onload = function(){
-    window.emailjs.init("WuFZcdSLARs6o8iXX");   
-  };
+  const location = useLocation();
+  const finderEmail = location.state?.finderEmail || '';
 
-  function sendEmail(event){
+  useEffect(() => {
+    window.emailjs.init("WuFZcdSLARs6o8iXX");
+  }, []);
+
+  function sendEmail(event) {
     event.preventDefault();
     window.emailjs.sendForm("service_hw20uol", "template_9ysvnfe", "#contact-form")
-      .then(function(){
-        alert("Message sent successfully!");  
+      .then(() => {
+        alert("Message sent successfully!");
         document.getElementById("contact-form").reset();
-      }, function (error){
+      }, (error) => {
         alert("Failed to send message:\n" + JSON.stringify(error));
       });
   }
@@ -24,30 +29,20 @@ function Contact() {
         <h2>Contact Finder</h2>
         <form id="contact-form" onSubmit={sendEmail} className="contact-form">
           <label>Name:</label>
-          <input
-            type="text"
-            name="user_name"
-            required
-          />
+          <input type="text" name="user_name" required />
 
           <label>Your Email:</label>
-          <input
-            type="email"
-            name="user_email"
-            required
-          />
+          <input type="email" name="user_email" required />
 
           <label>Message:</label>
-          <textarea
-            name="message"
-            rows="5"
-            required
-          />
+          <textarea name="message" rows="5" required />
 
           <label>Email of the finder:</label>
           <input
             type="email"
             name="finder_email"
+            value={finderEmail}
+            readOnly
             required
           />
 
