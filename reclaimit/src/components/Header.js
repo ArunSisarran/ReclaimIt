@@ -43,7 +43,7 @@ const Header = () => {
         <Link to="/" className="logo">Reclaimit</Link>
         <ul className="nav-links">
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/submit">Found Items</Link></li>
+          <li><Link to="/submit2">Found Items</Link></li>
           <li><Link to="/submit">Submit Item</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/contact">Contact</Link></li>

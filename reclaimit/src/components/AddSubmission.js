@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import './AddSubmission.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import FirestoreService from './FirestoreService';
+import './AddSubmission.css';
 
-
-const commonLocations = [
-  'North Building', 
+const commonLocations = ['North Building', 
   'East Building', 
   'Cooperman Library', 
   'West Building', 
@@ -20,10 +19,11 @@ const commonLocations = [
   'Brookdale Campus', 
   'Roosevelt House Public Policy Institute', 
   'MFA Building (205 Hudson Street)', 
-  'Silberman School of Social Work (East Harlem Campus)'
-];
+  'Silberman School of Social Work (East Harlem Campus)'];
 
-const AddSubmission = () => {
+const AddSubmissionForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     itemName: '',
     location: '',
@@ -33,34 +33,9 @@ const AddSubmission = () => {
     imageUpload: null,
   });
 
-  const [submissions, setSubmissions] = useState([]);
-  const [filterLocation, setFilterLocation] = useState('');
-
-  // Suggestions for form input
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-
-  // Suggestions for filter input
-  const [filterSuggestions, setFilterSuggestions] = useState([]);
-  const [showFilterSuggestions, setShowFilterSuggestions] = useState(false);
-
-  useEffect(() => {
-    async function loadItems() {
-      const data = await FirestoreService.getFoundItems();
-      setSubmissions(data);
-    }
-    loadItems();
-  }, []);
-
-  useEffect(() => {
-    async function fetchFiltered() {
-      const data = await FirestoreService.getFoundItems(filterLocation);
-      setSubmissions(data);
-    }
-    fetchFiltered();
-  }, [filterLocation]);
-  
-  
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -77,6 +52,8 @@ const AddSubmission = () => {
       ...prev,
       [name]: type === 'file' ? files[0] : value,
     }));
+
+    if (submitMessage) setSubmitMessage('');
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -92,26 +69,26 @@ const AddSubmission = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!validateDate(formData.dateFound)) {
       alert('Please enter the date in MM/DD/YYYY format.');
       return;
     }
-  
+
     try {
-      const id = await FirestoreService.addFoundItem(
+      await FirestoreService.addFoundItem(
         {
           itemName: formData.itemName,
           location: formData.location,
           dateFound: formData.dateFound,
-          description: formData.description,
+          description: formData.description || '', // optional
           contactEmail: formData.contactEmail,
         },
-        formData.imageUpload
+        formData.imageUpload // optional, can be null
       );
-  
-      alert('Thank you! Your item has been submitted.');
-  
+
+      setSubmitMessage('Thank you! Your item has been submitted.');
+
       setFormData({
         itemName: '',
         location: '',
@@ -120,55 +97,17 @@ const AddSubmission = () => {
         contactEmail: '',
         imageUpload: null,
       });
-  
-      document.getElementById('imageUpload').value = '';
-  
-      // Refresh item list
-      const data = await FirestoreService.getFoundItems();
-      setSubmissions(data);
-  
+
+      const fileInput = document.getElementById('imageUpload');
+      if (fileInput) {
+        fileInput.value = '';
+      }
+
     } catch (err) {
       console.error(err);
-      alert("There was an error submitting the item.");
+      alert('There was an error submitting the item. Please try again.');
     }
   };
-  
-
-  // Combine locations from submissions and common locations, unique
-  const allLocations = Array.from(
-    new Set([...submissions.map((s) => s.location), ...commonLocations])
-  );
-
-  const handleFilterChange = (e) => {
-    const val = e.target.value;
-    setFilterLocation(val);
-  
-    if (val.trim() === '') {
-      setFilterSuggestions([]);
-      setShowFilterSuggestions(false);
-      return;
-    }
-  
-    const filtered = allLocations.filter((loc) =>
-      loc.toLowerCase().startsWith(val.toLowerCase())
-    );
-    setFilterSuggestions(filtered);
-    setShowFilterSuggestions(true);
-  };
-  
-
-  const handleFilterSuggestionClick = (suggestion) => {
-    setFilterLocation(suggestion);
-    setFilterSuggestions([]);
-    setShowFilterSuggestions(false);
-  };
-  
-
-  const filteredSubmissions = filterLocation
-    ? submissions.filter((item) =>
-        item.location.toLowerCase().includes(filterLocation.toLowerCase())
-      )
-    : submissions;
 
   return (
     <div className="submission-page">
@@ -177,6 +116,12 @@ const AddSubmission = () => {
         <h2>Submit a Found Item</h2>
 
         <form onSubmit={handleSubmit} className="submission-form" autoComplete="off">
+          {submitMessage && (
+            <div className="submit-message" style={{ color: 'green', marginBottom: '1rem' }}>
+              {submitMessage}
+            </div>
+          )}
+
           <label>Item Name</label>
           <input
             type="text"
@@ -195,7 +140,7 @@ const AddSubmission = () => {
             required
             onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
           />
-          
+
           {showSuggestions && locationSuggestions.length > 0 && (
             <ul className="suggestions-list">
               {locationSuggestions.map((s, i) => (
@@ -225,7 +170,7 @@ const AddSubmission = () => {
             rows="4"
             value={formData.description}
             onChange={handleChange}
-            required
+            // removed required here, optional
           />
 
           <label>Your Email</label>
@@ -244,60 +189,14 @@ const AddSubmission = () => {
             name="imageUpload"
             accept="image/*"
             onChange={handleChange}
-            required
+            // removed required here, optional
           />
 
           <button type="submit">Submit Item</button>
         </form>
-
-        {/* Filter section with dropdown suggestions */}
-        <div className="filter-section">
-          <h3>Filter by Location</h3>
-          <div className="filter-input-wrapper">
-            <input
-              type="text"
-              placeholder="Enter location to filter..."
-              value={filterLocation}
-              onChange={handleFilterChange}
-              onBlur={() => setTimeout(() => setShowFilterSuggestions(false), 100)}
-            />
-            {showFilterSuggestions && filterSuggestions.length > 0 && (
-              <ul className="filter-suggestions-list">
-                {filterSuggestions.map((s, i) => (
-                  <li
-                    key={i}
-                    onClick={() => handleFilterSuggestionClick(s)}
-                    className="suggestion-item"
-                  >
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-
-        {/* Display submissions */}
-        <div className="submission-list">
-          <h3>Found Items</h3>
-          {filteredSubmissions.length === 0 ? (
-            <p>No items found.</p>
-          ) : (
-            filteredSubmissions.map((item) => (
-              <div key={item.id} className="submission-card">
-                <h4>{item.itemName}</h4>
-                <p><strong>Location:</strong> {item.location}</p>
-                <p><strong>Date:</strong> {item.dateFound}</p>
-                <p><strong>Description:</strong> {item.description}</p>
-                <p><strong>Contact:</strong> {item.contactEmail}</p>
-                {item.imageUrl && <img src={item.imageUrl} alt="Found item" />}
-              </div>
-            ))
-          )}
-        </div>
       </div>
     </div>
   );
 };
 
-export default AddSubmission;
+export default AddSubmissionForm;
