@@ -133,6 +133,212 @@ html, body {
   }
 }
 
+.stats-section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 60px 0;
+  backdrop-filter: blur(10px);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  text-align: center;
+}
+
+.stat-card {
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #6120fa;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.how-it-works {
+  padding: 80px 0;
+  background: white;
+}
+
+.how-it-works h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 3rem;
+  font-weight: 700;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.step-card {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(97, 32, 250, 0.2);
+}
+
+.step-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.step-card h3 {
+  color: #6120fa;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.step-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.recent-items {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+}
+
+.recent-items h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 3rem;
+  font-weight: 700;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.item-preview {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.item-preview:hover {
+  transform: translateY(-5px);
+}
+
+.item-image {
+  height: 200px;
+  overflow: hidden;
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-info {
+  padding: 1.5rem;
+}
+
+.item-info h4 {
+  color: #333;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.item-location,
+.item-date {
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.view-all-wrapper {
+  text-align: center;
+}
+
+/* Footer */
+.footer {
+  background: #333;
+  color: white;
+  padding: 60px 0 20px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #6120fa;
+  font-weight: 600;
+}
+
+.footer-section p {
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: #6120fa;
+}
+
+.footer-bottom {
+  border-top: 1px solid #555;
+  padding-top: 1rem;
+  text-align: center;
+  color: #999;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.5rem;
@@ -154,5 +360,79 @@ html, body {
 
   .container {
     padding: 0 15px;
+  }
+
+  .stats-grid,
+  .steps-grid,
+  .items-grid,
+  .tips-grid,
+  .locations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .how-it-works h2,
+  .recent-items h2,
+  .tips-section h2,
+  .locations-section h2,
+  .cta-content h2 {
+    font-size: 2rem;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+  }
+
+  .step-card,
+  .tip-card,
+  .location-group {
+    padding: 1.5rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 100px 0 60px;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .stats-section,
+  .how-it-works,
+  .recent-items,
+  .tips-section,
+  .locations-section,
+  .final-cta {
+    padding: 60px 0;
+  }
+
+  .how-it-works h2,
+  .recent-items h2,
+  .tips-section h2,
+  .locations-section h2,
+  .cta-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .scroll-indicator {
+    bottom: 20px;
+  }
+
+  .scroll-text {
+    font-size: 0.8rem;
+  }
+
+  .scroll-arrow {
+    margin-top: 0.25rem;
   }
 }
