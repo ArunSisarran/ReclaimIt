@@ -295,7 +295,7 @@ h3 {
   .submission-form input[type="file"],
   .submission-form textarea {
     padding: 12px;
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px; 
     margin-top: 8px;
   }
 
@@ -306,14 +306,14 @@ h3 {
   }
 
   .submission-form button:hover {
-    transform: none; /* Remove scale effect on mobile */
+    transform: none; 
   }
 
   .submission-form input:hover,
   .submission-form input:focus,
   .submission-form textarea:hover,
   .submission-form textarea:focus {
-    transform: none; /* Remove scale effect on mobile */
+    transform: none; 
   }
 
   .filter-input-wrapper {
@@ -378,7 +378,7 @@ h3 {
   }
 }
 
-/* Very small screens */
+
 @media (max-width: 320px) {
   .submission-container {
     margin: 10px auto;
