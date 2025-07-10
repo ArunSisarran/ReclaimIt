@@ -65,6 +65,11 @@ const FoundItemsPage = () => {
       )
     : submissions;
 
+  const refreshTheList = async () => {
+    const data = await FirestoreService.getFoundItems();
+    setSubmissions(data);
+  };
+
   return (
     <div className="submission-page">
       <Header />
@@ -101,7 +106,7 @@ const FoundItemsPage = () => {
           )}
         </div>
 
-        <FoundItemsList items={filteredSubmissions} />
+        <FoundItemsList items={filteredSubmissions} onItemUpdated={refreshTheList} />
 
         <div className="results-message" style={{ marginTop: '1rem', fontStyle: 'italic' }}>
           {filteredSubmissions.length > 0 ? (
