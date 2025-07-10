@@ -20,3 +20,28 @@ html, body {
   padding-top: 40px;
   background-color: #eef2f3;
 }
+
+@media (max-width: 1024px) {
+  .App {
+    padding-top: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding-top: 20px;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 320px) {
+  .App {
+    padding-top: 5px;
+  }
+}
