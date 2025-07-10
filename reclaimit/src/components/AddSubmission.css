@@ -71,13 +71,11 @@ h3 {
   cursor: pointer;
 }
 
-
 .filter-section {
   margin-top: 40px;
   text-align: center;
 }
 
-/* Wrapper around filter input for relative positioning */
 .filter-input-wrapper {
   position: relative;
   width: 80%;
@@ -94,7 +92,6 @@ h3 {
   font-size: 16px;
 }
 
-/* Dropdown suggestions for filter input */
 .filter-suggestions-list {
   position: absolute;
   top: 100%;
@@ -155,7 +152,6 @@ h3 {
   border: 1px solid #ccc;
 }
 
-/* Suggestions dropdown for form input (kept consistent) */
 .suggestions-list {
   border: 1px solid #ccc;
   border-top: none;
@@ -191,16 +187,13 @@ h3 {
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
-
-  /* Add transition for smooth effect */
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .submission-form button:hover {
   background-color: #4c00ff;
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  transform: scale(1.05);
 }
-
 
 .submission-form input[type="file"] {
   padding: 10px;
@@ -217,7 +210,6 @@ h3 {
   transform: scale(1.05);
   border-color: #6120fa;
 }
-
 
 .submission-form input[type="text"],
 .submission-form input[type="email"],
@@ -244,7 +236,6 @@ h3 {
   cursor: text;
 }
 
-
 .filter-input-wrapper input {
   padding: 10px;
   border: 1px solid #ccc;
@@ -263,4 +254,150 @@ h3 {
   transform: scale(1.03);
   border-color: #6120fa;
   outline: none;
+}
+
+@media (max-width: 1024px) {
+  .submission-container {
+    max-width: 90%;
+    margin: 30px auto;
+    padding: 25px;
+  }
+
+  .filter-input-wrapper {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .submission-page {
+    padding-top: 70px;
+  }
+
+  .submission-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 95%;
+    border-radius: 8px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .submission-form label {
+    margin-top: 12px;
+    font-size: 0.95rem;
+  }
+
+  .submission-form input[type="text"],
+  .submission-form input[type="email"],
+  .submission-form input[type="file"],
+  .submission-form textarea {
+    padding: 12px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    margin-top: 8px;
+  }
+
+  .submission-form button {
+    padding: 15px;
+    font-size: 16px;
+    margin-top: 25px;
+  }
+
+  .submission-form button:hover {
+    transform: none; /* Remove scale effect on mobile */
+  }
+
+  .submission-form input:hover,
+  .submission-form input:focus,
+  .submission-form textarea:hover,
+  .submission-form textarea:focus {
+    transform: none; /* Remove scale effect on mobile */
+  }
+
+  .filter-input-wrapper {
+    width: 100%;
+    max-width: none;
+  }
+
+  .submission-card {
+    padding: 15px;
+    margin: 15px 0;
+  }
+
+  .submission-card h4 {
+    font-size: 18px;
+  }
+
+  .suggestions-list {
+    max-height: 120px;
+  }
+
+  .suggestion-item {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .submission-container {
+    margin: 15px auto;
+    padding: 15px;
+    max-width: 98%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .submission-form input[type="text"],
+  .submission-form input[type="email"],
+  .submission-form input[type="file"],
+  .submission-form textarea {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .submission-form button {
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .submission-card {
+    padding: 12px;
+    margin: 12px 0;
+  }
+
+  .submission-card h4 {
+    font-size: 16px;
+  }
+
+  .submission-card p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+  .submission-container {
+    margin: 10px auto;
+    padding: 12px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .submission-form label {
+    font-size: 0.9rem;
+  }
+
+  .submission-form input[type="text"],
+  .submission-form input[type="email"],
+  .submission-form input[type="file"],
+  .submission-form textarea {
+    padding: 8px;
+    font-size: 15px;
+  }
 }
